@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 export interface Column<T> {
+  id?: string;
   header: string;
   accessorKey?: keyof T;
   className?: string;
@@ -31,9 +32,39 @@ export interface DataTableProps<T> {
   onPageChange?: (newStart: number) => void;
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
+  getRowId?: (row: T) => string | number;
 }
 
-export function DataTable<T extends Record<string, any>>({
+function getColumnKey<T>(col: Column<T>, index: number): string {
+  if (col.id) return col.id;
+  if (col.accessorKey) return String(col.accessorKey);
+  if (col.header) return col.header;
+  return `column-${index}`;
+}
+
+function getRowKey<T>(row: T, index: number, getRowId?: (row: T) => string | number): string | number {
+  if (getRowId) {
+    return getRowId(row);
+  }
+  if (row && typeof row === "object") {
+    const record = row as Record<string, unknown>;
+    for (const key of ["id", "id_funcionario", "uuid", "key"]) {
+      const val = record[key];
+      if (typeof val === "string" || typeof val === "number") {
+        return val;
+      }
+    }
+  }
+  return `row-${index}`;
+}
+
+function getAlignmentClass(align?: "left" | "center" | "right"): string {
+  if (align === "center") return "text-center";
+  if (align === "right") return "text-right";
+  return "text-left";
+}
+
+export function DataTable<T>({
   columns,
   data,
   loading = false,
@@ -44,15 +75,76 @@ export function DataTable<T extends Record<string, any>>({
   onPageChange,
   onRowClick,
   emptyMessage = "No se encontraron registros",
-}: DataTableProps<T>) {
+  getRowId,
+}: Readonly<DataTableProps<T>>) {
   const currentPage = Math.floor(start / limit) + 1;
   const totalPages = Math.max(1, Math.ceil(total / limit));
   const hasPagination = onPageChange && total > 0;
 
+  const renderCellContent = (col: Column<T>, row: T, rowIdx: number) => {
+    if (col.render) {
+      return col.render(row, rowIdx);
+    }
+    if (col.accessorKey) {
+      return (row[col.accessorKey] as React.ReactNode) ?? "-";
+    }
+    return "-";
+  };
+
+  const renderTableBody = () => {
+    if (loading) {
+      return (
+        <TableRow className="border-border/40 hover:bg-transparent">
+          <TableCell
+            colSpan={columns.length}
+            className="text-center py-16 text-muted-foreground"
+          >
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <span className="text-sm font-medium">Cargando datos desde PXP...</span>
+            </div>
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (data.length === 0) {
+      return (
+        <TableRow className="border-border/40 hover:bg-transparent">
+          <TableCell
+            colSpan={columns.length}
+            className="text-center py-16 text-muted-foreground text-sm"
+          >
+            {emptyMessage}
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return data.map((row, rowIdx) => (
+      <TableRow
+        key={getRowKey(row, rowIdx, getRowId)}
+        onClick={() => onRowClick?.(row)}
+        className={`border-border/50 transition-colors ${
+          onRowClick ? "cursor-pointer hover:bg-accent/60" : "hover:bg-accent/30"
+        }`}
+      >
+        {columns.map((col, colIdx) => (
+          <TableCell
+            key={getColumnKey(col, colIdx)}
+            className={`text-foreground py-3.5 text-sm ${getAlignmentClass(col.align)} ${col.className || ""}`}
+          >
+            {renderCellContent(col, row, rowIdx)}
+          </TableCell>
+        ))}
+      </TableRow>
+    ));
+  };
+
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
+    <div className="bg-card text-card-foreground border border-border rounded-2xl overflow-hidden shadow-sm flex flex-col">
       {error && (
-        <div className="p-4 bg-red-500/10 border-b border-red-500/20 text-red-400 flex items-center gap-3 text-sm">
+        <div className="p-4 bg-destructive/10 border-b border-destructive/20 text-destructive flex items-center gap-3 text-sm">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -61,17 +153,13 @@ export function DataTable<T extends Record<string, any>>({
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-800 bg-slate-950/60 hover:bg-slate-950/60">
+            <TableRow className="border-border bg-muted/40 hover:bg-muted/40">
               {columns.map((col, idx) => (
                 <TableHead
-                  key={idx}
-                  className={`text-slate-400 font-semibold text-xs tracking-wider uppercase py-3.5 ${
-                    col.align === "center"
-                      ? "text-center"
-                      : col.align === "right"
-                      ? "text-right"
-                      : "text-left"
-                  } ${col.className || ""}`}
+                  key={getColumnKey(col, idx)}
+                  className={`text-muted-foreground font-semibold text-xs tracking-wider uppercase py-3.5 ${getAlignmentClass(
+                    col.align
+                  )} ${col.className || ""}`}
                 >
                   {col.header}
                 </TableHead>
@@ -79,69 +167,23 @@ export function DataTable<T extends Record<string, any>>({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading ? (
-              <TableRow className="border-slate-800/40 hover:bg-transparent">
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-center py-16 text-slate-400"
-                >
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <Loader2 className="w-6 h-6 animate-spin text-indigo-500" />
-                    <span className="text-sm font-medium">Cargando datos desde PXP...</span>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : data.length === 0 ? (
-              <TableRow className="border-slate-800/40 hover:bg-transparent">
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-center py-16 text-slate-500 text-sm"
-                >
-                  {emptyMessage}
-                </TableCell>
-              </TableRow>
-            ) : (
-              data.map((row, rowIdx) => (
-                <TableRow
-                  key={rowIdx}
-                  onClick={() => onRowClick?.(row)}
-                  className={`border-slate-800/50 transition-colors ${
-                    onRowClick ? "cursor-pointer hover:bg-slate-800/70" : "hover:bg-slate-800/40"
-                  }`}
-                >
-                  {columns.map((col, colIdx) => (
-                    <TableCell
-                      key={colIdx}
-                      className={`text-slate-300 py-3.5 text-sm ${
-                        col.align === "center"
-                          ? "text-center"
-                          : col.align === "right"
-                          ? "text-right"
-                          : "text-left"
-                      } ${col.className || ""}`}
-                    >
-                      {col.render ? col.render(row, rowIdx) : (row[col.accessorKey as string] ?? "-")}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            )}
+            {renderTableBody()}
           </TableBody>
         </Table>
       </div>
 
       {hasPagination && (
-        <div className="p-4 border-t border-slate-800/80 bg-slate-950/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+        <div className="p-4 border-t border-border bg-muted/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <div>
             Mostrando{" "}
-            <span className="font-semibold text-slate-200">
+            <span className="font-semibold text-foreground">
               {Math.min(start + 1, total)}
             </span>{" "}
             a{" "}
-            <span className="font-semibold text-slate-200">
+            <span className="font-semibold text-foreground">
               {Math.min(start + data.length, total)}
             </span>{" "}
-            de <span className="font-semibold text-slate-200">{total}</span> registros
+            de <span className="font-semibold text-foreground">{total}</span> registros
           </div>
 
           <div className="flex items-center gap-2">
@@ -150,14 +192,14 @@ export function DataTable<T extends Record<string, any>>({
               variant="outline"
               disabled={start === 0 || loading}
               onClick={() => onPageChange(Math.max(0, start - limit))}
-              className="h-8 px-3 text-xs border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-40"
+              className="h-8 px-3 text-xs disabled:opacity-40"
             >
               <ChevronLeft className="w-3.5 h-3.5 mr-1" /> Anterior
             </Button>
 
-            <span className="px-2 text-slate-400">
-              Página <span className="text-slate-200 font-medium">{currentPage}</span> de{" "}
-              <span className="text-slate-200 font-medium">{totalPages}</span>
+            <span className="px-2 text-muted-foreground">
+              Página <span className="text-foreground font-medium">{currentPage}</span> de{" "}
+              <span className="text-foreground font-medium">{totalPages}</span>
             </span>
 
             <Button
@@ -165,7 +207,7 @@ export function DataTable<T extends Record<string, any>>({
               variant="outline"
               disabled={start + limit >= total || loading}
               onClick={() => onPageChange(start + limit)}
-              className="h-8 px-3 text-xs border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-40"
+              className="h-8 px-3 text-xs disabled:opacity-40"
             >
               Siguiente <ChevronRight className="w-3.5 h-3.5 ml-1" />
             </Button>

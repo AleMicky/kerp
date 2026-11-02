@@ -11,7 +11,7 @@ export function StateBadge({
   state,
   activeLabel = "Activo",
   inactiveLabel = "Inactivo",
-}: StateBadgeProps) {
+}: Readonly<StateBadgeProps>) {
   const normalized = (state || "").toLowerCase().trim();
   const isActive = normalized === "activo" || normalized === "active" || normalized === "1";
 
@@ -25,8 +25,8 @@ export function StateBadge({
   }
 
   return (
-    <Badge className="bg-slate-800 text-slate-400 border-slate-700 font-medium">
-      <span className="w-1.5 h-1.5 rounded-full bg-slate-500 inline-block mr-1.5" />
+    <Badge className="bg-muted text-muted-foreground border-border font-medium">
+      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground inline-block mr-1.5" />
       {inactiveLabel}
     </Badge>
   );

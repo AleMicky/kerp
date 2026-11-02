@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Users, RefreshCw, Mail, Phone, Briefcase, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,14 +62,14 @@ export default function FuncionariosPage() {
       header: "Funcionario",
       render: (item) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center font-semibold text-xs shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center font-semibold text-xs shrink-0">
             {item.desc_person ? item.desc_person.charAt(0).toUpperCase() : "F"}
           </div>
           <div>
-            <div className="font-medium text-slate-100 leading-tight">
+            <div className="font-medium text-foreground leading-tight">
               {item.desc_person || "Sin nombre registrado"}
             </div>
-            <div className="text-xs text-slate-400 mt-0.5">
+            <div className="text-xs text-muted-foreground mt-0.5">
               C.I.: {item.ci || "N/D"}
             </div>
           </div>
@@ -80,11 +80,11 @@ export default function FuncionariosPage() {
       header: "Código / Cargo",
       render: (item) => (
         <div>
-          <div className="font-mono text-xs text-indigo-400">
+          <div className="font-mono text-xs text-primary font-medium">
             {item.codigo || `FUNC-${item.id_funcionario}`}
           </div>
-          <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-            <Briefcase className="w-3.5 h-3.5 text-slate-500" />
+          <div className="text-xs text-muted-foreground flex items-center gap-1.5 mt-0.5">
+            <Briefcase className="w-3.5 h-3.5 text-muted-foreground" />
             {item.nombre_cargo || "Funcionario de Planta"}
           </div>
         </div>
@@ -95,16 +95,16 @@ export default function FuncionariosPage() {
       render: (item) => (
         <div className="space-y-0.5">
           {item.email_empresa ? (
-            <div className="text-xs text-slate-300 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <div className="text-xs text-foreground flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
               <span className="truncate max-w-[200px]">{item.email_empresa}</span>
             </div>
           ) : (
-            <span className="text-xs text-slate-600">Sin correo</span>
+            <span className="text-xs text-muted-foreground/60">Sin correo</span>
           )}
           {(item.telefono || item.celular || item.interno) && (
-            <div className="text-xs text-slate-400 flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <div className="text-xs text-muted-foreground flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
               <span>{item.celular || item.telefono || `Int: ${item.interno}`}</span>
             </div>
           )}
@@ -115,7 +115,7 @@ export default function FuncionariosPage() {
       header: "Fecha Ingreso",
       align: "center",
       render: (item) => (
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-muted-foreground">
           {item.fecha_ingreso || "N/A"}
         </span>
       ),
@@ -140,12 +140,11 @@ export default function FuncionariosPage() {
               size="sm"
               onClick={handleReload}
               disabled={loading}
-              className="border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300"
             >
               <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? "animate-spin" : ""}`} />
               Refrescar
             </Button>
-            <Button size="sm" className="bg-indigo-600 hover:bg-indigo-500 text-white">
+            <Button size="sm">
               <Plus className="w-3.5 h-3.5 mr-1.5" />
               Nuevo Funcionario
             </Button>
@@ -155,13 +154,13 @@ export default function FuncionariosPage() {
 
       {/* Métricas rápidas */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-card border-border">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-xs text-slate-400">Total Funcionarios</p>
-              <p className="text-2xl font-bold text-slate-100 mt-1">{total}</p>
+              <p className="text-xs text-muted-foreground">Total Funcionarios</p>
+              <p className="text-2xl font-bold text-foreground mt-1">{total}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
           </CardContent>
