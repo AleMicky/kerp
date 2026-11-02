@@ -23,6 +23,28 @@ export default function RootLayout({
       className={cn("h-full antialiased dark", "font-sans", inter.variable, geistHeading.variable)}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('kerp-ui-store');
+                  var theme = stored ? JSON.parse(stored)?.state?.theme : null;
+                  if (!theme) {
+                    theme = localStorage.getItem('kerp-theme');
+                  }
+                  if (theme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  } else if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <QueryProvider>{children}</QueryProvider>
       </body>

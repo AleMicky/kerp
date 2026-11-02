@@ -45,6 +45,24 @@ export async function POST(req: NextRequest) {
 
     try {
       const data = parsePxpJson(rawText);
+
+      // Si PXP reporta que la sesión no está iniciada o expiró
+      if (
+        data?.ROOT?.error === true &&
+        (data?.ROOT?.detalle?.mensaje?.toLowerCase().includes("sesion") ||
+          data?.ROOT?.detalle?.mensaje?.toLowerCase().includes("sesión"))
+      ) {
+        return NextResponse.json(
+          {
+            success: false,
+            tipo: "ERROR",
+            mensaje: data.ROOT.detalle.mensaje || "Sesión expirada o no iniciada",
+            ROOT: data.ROOT,
+          },
+          { status: 401 }
+        );
+      }
+
       return NextResponse.json(data);
     } catch {
       // Si la respuesta no es JSON válido (ej. error PHP o HTML)

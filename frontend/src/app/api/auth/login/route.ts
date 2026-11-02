@@ -131,11 +131,35 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Reenviar las cookies de sesión PHP (PHPSESSID) al navegador
-    const finalCookies = backendRes.headers["set-cookie"];
-    const finalCookie = Array.isArray(finalCookies) ? finalCookies.join("; ") : (finalCookies || sessionCookie);
-    if (finalCookie) {
-      response.headers.set("set-cookie", finalCookie);
+    // Reenviar las cookies de sesión PHP (PHPSESSID) al navegador asegurando path: "/"
+    const rawCookieHeaders: string[] = [];
+    const backendSetCookie = backendRes.headers["set-cookie"];
+    if (Array.isArray(backendSetCookie)) {
+      rawCookieHeaders.push(...backendSetCookie);
+    } else if (backendSetCookie) {
+      rawCookieHeaders.push(backendSetCookie);
+    }
+    if (sessionCookie) {
+      rawCookieHeaders.push(sessionCookie);
+    }
+
+    let phpsessid = "";
+    for (const cookieStr of rawCookieHeaders) {
+      const match = cookieStr.match(/PHPSESSID=([^;]+)/i);
+      if (match) {
+        phpsessid = match[1];
+        break;
+      }
+    }
+
+    if (phpsessid) {
+      response.cookies.set({
+        name: "PHPSESSID",
+        value: phpsessid,
+        path: "/",
+        httpOnly: true,
+        sameSite: "lax",
+      });
     }
 
     return response;
