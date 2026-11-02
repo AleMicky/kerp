@@ -1,0 +1,6 @@
+.git
+reportes_generados/*
+uploaded_files/*
+!reportes_generados/.gitkeep
+!uploaded_files/.gitkeep
+frontend

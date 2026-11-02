@@ -1,0 +1,308 @@
+/*!
+ * Ext JS Library 3.3.0
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+
+.bven1 {
+	background-image:url(dibu_ven.png) !important;  
+}
+.blist {
+	background-image:url(dibu_list.png) !important;  
+}
+.bsave {
+	background-image:url(dibu_save.png) !important;
+  
+}
+.bnew {
+	background-image:url(dibu_new.png) !important;   
+}
+.bdel {
+	background-image:url(dibu_eli.png) !important;  
+}
+.bact {
+	background-image:url(dibu_act.png) !important;
+}
+.bactfil {
+	background-image:url(dibu_actfil.png) !important;
+}
+.bprint {
+	background-image:url(dibu_printer.png) !important; 
+}
+.bedit {
+	background-image:url(dibu_edit.png) !important;
+}
+
+.badelante {
+	background-image:url(dibu_adelante.png) !important;
+}
+.batras {
+	background-image:url(dibu_atras.png) !important;
+}
+.bbajar {
+	background-image:url(dibu_bajar.png) !important;
+}
+.bsubir {
+	background-image:url(dibu_subir.png) !important;
+}
+.bupload {
+	background-image:url(dibu_upload.png) !important;
+}
+.bfolder {
+	background-image:url(dibu_folder.png) !important;
+}
+.bok {
+	background-image:url(dibu_ok.png) !important;
+}
+
+/*.bexcel {
+	background-image:url(../iconos_generales/excel.png) !important;
+}
+.bpdf {
+	background-image:url(../iconos_generales/pdf.png) !important;
+}*/
+.bpagar {
+	background-image:url(../iconos_generales/pagar.png) !important;
+}
+.breload {
+	background-image:url(dibu_reload1.png) !important;
+}
+.breload1 {
+	background-image:url(dibu_reload2.png) !important;
+}
+.breload2 {
+	background-image:url(dibu_reload3.png) !important;
+}
+
+.bundo {
+	background-image:url(dibu_undo.png) !important;
+}
+
+.bredo {
+	background-image:url(dibu_redo.png) !important;
+}
+
+.balert {
+	background-image:url(dibu_alert.png) !important;
+}
+
+.binfo{
+	background-image:url(dibu_info.png) !important;
+}
+.bassign{
+	background-image:url(dibu_assign.png) !important;
+}
+.bexport{
+	background-image:url(dibu_export.png) !important;
+}
+.brenew{
+	background-image:url(dibu_renew.png) !important;
+}
+.bballot {
+	background-image:url(dibu_ballot.png) !important;
+}
+.bupload1 {
+	background-image:url(dibu_upload1.png) !important;
+}
+.bend {
+	background-image:url(dibu_end.png) !important;
+}
+.bsee {
+	background-image:url(dibu_see.png) !important;
+}
+.bgood {
+	background-image:url(dibu_good.png) !important;
+}
+.bwrong {
+	background-image:url(dibu_wrong.png) !important;
+}
+.bcharge {
+	background-image:url(dibu_charge.png) !important;
+}
+.bselect {
+	background-image:url(dibu_select.png) !important;
+}
+
+.bexcel {
+	background-image:url(dibu_excel.png) !important;
+}
+
+.bprintcheck {
+    background-image:url(dibu_print_check.png) !important;
+}
+
+.bword {
+    background-image:url(dibu_word.jpg) !important;
+}
+
+.bpdf {
+	background-image:url(dibu_pdf.png) !important;
+}
+.block {
+	background-image:url(dibu_lock.png) !important;
+}
+.bunlock {
+	background-image:url(dibu_unlock.png) !important;
+}
+.bstatistics {
+	background-image:url(dibu_statistics.png) !important;
+}
+.bgear {
+	background-image:url(dibu_gear.png) !important;
+} 
+.bcalendar {
+	background-image:url(dibu_calendar.png) !important;
+}
+.bpdf32 {
+	background-image:url(dibu_pdf32.png) !important;
+}
+.bchecklist {
+	background-image:url(dibu_checklist.png) !important;
+}
+.baddphoto {
+	background-image:url(dibu_add_photo.png) !important;
+}
+.bmenuitems {
+	background-image:url(dibu_menu_items.png) !important;
+}
+.bgraph {
+	background-image:url(dibu_graph.png) !important;
+}
+.bstats {
+	background-image:url(dibu_stats.png) !important;
+}
+.bengine {
+	background-image:url(dibu_engine.png) !important;
+}
+.bdocuments {
+	background-image:url(dibu_documents.png) !important;
+}
+.bengineadd {
+	background-image:url(dibu_engine_add.png) !important;
+}
+.bengineremove {
+	background-image:url(dibu_engine_remove.png) !important;
+}
+.bcalendaradd {
+	background-image:url(dibu_calendar_add.png) !important;
+}
+.bcalendarremove {
+	background-image:url(dibu_calendar_remove.png) !important;
+}
+.bpause {
+	background-image:url(dibu_pause.png) !important;
+}
+.bplay {
+	background-image:url(dibu_play.png) !important;
+}
+.bcancelfile {
+	background-image:url(dibu_cancel_file.png) !important;
+}
+.btag_deny {
+	background-image:url(dibu_tag_deny.png) !important;
+}
+.btag_accept {
+	background-image:url(dibu_tag_accept.png) !important;
+}
+.bzoom {
+	background-image:url(dibu_zoom.png) !important;
+}
+.btransfer {
+    background-image:url(dibu_transferDB.png) !important;
+}
+.bgantt {
+    background-image:url(dibu_gantt.png) !important;
+}
+.bemail {
+    background-image:url(dibu_email.png) !important;
+}
+.bsendmail {
+    background-image:url(dibu_send_mail.png) !important;
+}
+.bcargo {
+    background-image:url(dibu_cargo.png) !important;
+}
+.bincremento_salarial {
+    background-image:url(dibu_incremento.png) !important;
+}
+.bclock {
+    background-image:url(dibu_clock.png) !important;
+}
+.bcalculator {
+    background-image:url(dibu_calculator.png) !important;
+}
+.bmoney {
+    background-image:url(dibu_money.png) !important;
+}
+
+.badd {
+    background-image:url(dibu_add_16.png) !important;
+}
+
+.bdelete {
+    background-image:url(dibu_delete_16.png) !important;
+}
+
+.bexecdb {
+    background-image:url(dibu_execdb.png) !important;
+}
+
+.bdibu_mail{
+    background-image:url(dibu_mail.png) !important;
+}
+
+.btransferMoney{
+    background-image:url(dibu_transfer.png) !important;
+}
+
+.bball_green {
+    background-image:url(../ball_green.png) !important;
+}
+
+.bball_white {
+    background-image:url(../ball_white.png) !important;
+}
+
+.bduplicate {
+    background-image:url(dibu_duplicate.png) !important;
+}
+
+.x-action-col-cell img.bsearch {
+    background-image:url(dibu_search.png);
+    height: 20px;
+    width: 20px;
+}
+
+.search {
+    background-image:url(dibu_search.png) !important;
+}
+.bright-all {
+	background-image:url(awe_rigth_arrow_all.png) !important;
+
+}
+.bleft-all {
+	background-image:url(awe_left_arrow_all.png) !important;
+
+}
+.brellamada {
+    background-image:url(volumen.png) !important;
+}
+.batencion {
+    background-image:url(atencion.png) !important;
+}
+.bderivar {
+    background-image:url(reproducir.png) !important;
+}
+.bstop {
+    background-image:url(detener.png) !important;
+}
+.bcancelar {
+    background-image:url(cancelar.png) !important;
+}
+.bchecked {
+	background-image:url(checked.png) !important;
+}
+.bunchecked{
+	background-image:url(unchecked.png) !important;
+}

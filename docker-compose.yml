@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:11-alpine
+    container_name: kerp_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dbkerp
+      POSTGRES_PASSWORD: postgres_password
+    volumes:
+      - kerp_db_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - "5432:5432"
+    command: >
+      postgres -c bytea_output=escape
+               -c DateStyle='ISO, DMY'
+    networks:
+      - kerp_net
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kerp_web
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/kerp
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=dbkerp
+      - DB_USER=conexion
+      - DB_PASS=dbkerp_conexion
+      - POSTGRES_PASSWORD=postgres_password
+    networks:
+      - kerp_net
+
+volumes:
+  kerp_db_data:
+
+networks:
+  kerp_net:
+    driver: bridge
+
